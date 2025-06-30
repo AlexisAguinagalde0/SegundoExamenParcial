@@ -10,5 +10,13 @@
     {
         "nombre": "AL",
         "puntaje": 26
+    },
+    {
+        "nombre": "ALJ",
+        "puntaje": 229
+    },
+    {
+        "nombre": "ALJJJ",
+        "puntaje": 157
     }
 ]
