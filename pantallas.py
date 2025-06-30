@@ -22,16 +22,7 @@ def dibujar_tablero_con_textos(pantalla, matriz, x_inicio, y_inicio, TAM_CASILLA
             x = x_inicio + col * TAM_CASILLA
             y = y_inicio + fila * TAM_CASILLA
 
-            if valor == 0:
-                color = AZUL_CLARO
-            elif valor == 200:
-                color = (0, 0, 0)
-            elif 1 <= valor < 100:
-                color = AZUL_CLARO
-            elif valor >= 100:
-                color = (255, 0, 0)
-            else:
-                color = (100, 100, 100)
+            color = color_por_valor(valor)
 
             pygame.draw.rect(pantalla, color, (x, y, TAM_CASILLA, TAM_CASILLA))
             pygame.draw.rect(pantalla, BLANCO, (x, y, TAM_CASILLA, TAM_CASILLA), 1)
@@ -233,7 +224,8 @@ def pantalla_juego(pantalla, matriz, nombre, fondo_juego = None, explosion_frame
         x_boton = pantalla.get_width() - ancho_boton - 20
         y_boton = 20
         boton_reiniciar = crear_boton(pantalla, "Reiniciar", x_boton, y_boton, ancho_boton, alto_boton)
-        boton_mute = crear_boton(pantalla, "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊", 20, pantalla.get_height() - 80, 80, 60)
+        boton_mute = dibujar_boton_mute(pantalla, 20, pantalla.get_height() - 80, 80, 60)
+
 
 
         for evento in pygame.event.get():               #Procesamiento de lo que hace el jugador
@@ -250,10 +242,7 @@ def pantalla_juego(pantalla, matriz, nombre, fondo_juego = None, explosion_frame
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = evento.pos                   #Si se hace click con el mouse en la pantalla, captura la posicion
                 if boton_mute.collidepoint(evento.pos):
-                    if pygame.mixer.music.get_volume() > 0:
-                        pygame.mixer.music.set_volume(0)        #SI es en el boton de mute, mutea o desmutea la musica
-                    else:
-                        pygame.mixer.music.set_volume(0.2)
+                    toggle_musica()
 
                 
                 if boton_reiniciar.collidepoint((mouse_x, mouse_y)):
@@ -376,7 +365,7 @@ def menu_principal(pantalla, fondo, fondo_juego, explosion_frames):             
         boton_jugar = crear_boton(pantalla, "Jugar", x_boton, y_inicial + espaciado * 1, ancho_boton, alto_boton)
         boton_puntajes = crear_boton(pantalla, "Ver Puntajes", x_boton, y_inicial + espaciado * 2, ancho_boton, alto_boton)
         boton_salir = crear_boton(pantalla, "Salir", x_boton, y_inicial + espaciado * 3, ancho_boton, alto_boton)
-        boton_mute = crear_boton(pantalla, "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊", 20, pantalla.get_height() - 80, 80, 60)
+        boton_mute = dibujar_boton_mute(pantalla, 20, pantalla.get_height() - 80, 80, 60)
 
 
         for evento in pygame.event.get():
@@ -404,10 +393,7 @@ def menu_principal(pantalla, fondo, fondo_juego, explosion_frames):             
                     sys.exit()
                 
                 if boton_mute.collidepoint(evento.pos):
-                    if pygame.mixer.music.get_volume() > 0:                     #Mutea y desmutea la musica 
-                        pygame.mixer.music.set_volume(0)
-                    else:
-                        pygame.mixer.music.set_volume(0.2)
+                    toggle_musica()
 
             if evento.type == pygame.KEYDOWN:
                                                                                             #Ctrl + R para borrar puntajes guardados del archivo 

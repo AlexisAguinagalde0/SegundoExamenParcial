@@ -323,13 +323,10 @@ def mostrar_mejores_puntajes(pantalla):
                 if boton_volver.collidepoint(evento.pos):           #Si el jugador hace click en el boton volver, se sale del bucle y termina su funcion
                     ejecutando = False
                 if boton_mute.collidepoint(evento.pos):
-                    if pygame.mixer.music.get_volume() > 0:
-                        pygame.mixer.music.set_volume(0)
-                    else:
-                        pygame.mixer.music.set_volume(0.2)
+                    toggle_musica()
 
+        boton_mute = dibujar_boton_mute(pantalla, 20, pantalla.get_height() - 80, 80, 60)
 
-        boton_mute = crear_boton(pantalla, "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊", 20, pantalla.get_height() - 80, 80, 60)
 
         pygame.display.flip()                   #Actualiza la ventana con los cambios realizados
 
@@ -387,3 +384,36 @@ def borrar_puntajes():
         print("✅ Puntajes eliminados correctamente.")
     else:
         print("⚠️ No hay puntajes guardados.")
+
+def toggle_musica():
+    """
+    Alterna entre silenciar y activar el volumen de la música de fondo.
+    """
+    if pygame.mixer.music.get_volume() > 0:
+        pygame.mixer.music.set_volume(0)
+    else:
+        pygame.mixer.music.set_volume(0.2)
+
+def color_por_valor(valor):
+    """
+    Devuelve el color correspondiente según el valor de la celda en la matriz.
+    """
+    color = (100, 100, 100)  # Valor por defecto (gris)
+
+    if valor == 0:
+        color = AZUL_CLARO
+    elif valor == 200:
+        color = (0, 0, 0)
+    elif 1 <= valor < 100:
+        color = AZUL_CLARO
+    elif valor >= 100:
+        color = (255, 0, 0)
+
+    return color
+
+def dibujar_boton_mute(pantalla, x, y, ancho, alto):
+    """
+    Dibuja el botón de mute/desmute con el símbolo correcto según el estado del volumen.
+    """
+    texto_mute = "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊"
+    return crear_boton(pantalla, texto_mute, x, y, ancho, alto)
