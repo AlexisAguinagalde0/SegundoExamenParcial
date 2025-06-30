@@ -1,6 +1,8 @@
 import pygame
 import sys
 from funciones import *
+import os
+RUTA_MEDIA = os.path.join(os.path.dirname(__file__), "archivos_multimedia")
 
 
 BLANCO = (255, 255, 255)
@@ -83,7 +85,7 @@ def cargar_animacion_explosion():
     """
     frames = []                                                                                                 #Se inicia una lista que guarda las imagenes
     for i in range(6):                                                                                           # itera segun la cantidad de imagenes pasadas
-        ruta = f"E:/Nueva carpeta/SegundoExamenParcial/SegundoExamenParcial/archivos_multimedia/explosiones/explosion_{i + 1}.jpg"
+        ruta = os.path.join(RUTA_MEDIA, "explosiones", f"explosion_{i + 1}.jpg")
         frame = pygame.image.load(ruta).convert_alpha()          #Carga la imagen y mantiene la transparencia
         frame = pygame.transform.scale(frame, (40, 40))          #Ajustá el tamaño a segun cada casillero
         frames.append(frame)                                     #Guarda cada frame en la lista
@@ -212,10 +214,10 @@ def pantalla_juego(pantalla, matriz, nombre, fondo_juego = None, explosion_frame
     columnas = len(matriz[0])
     pygame.mouse.set_visible(False)  # Ocultar cursor al entrar a la pantalla de juego usando la imagen
 
-    imagen_misil = pygame.image.load(r"E:\Nueva carpeta\SegundoExamenParcial\SegundoExamenParcial\archivos_multimedia\misil_cursor.png").convert_alpha() #Carga la imagen del misil
+    imagen_misil = pygame.image.load(os.path.join(RUTA_MEDIA, "misil_cursor.png")).convert_alpha()              #Carga la imagen del misil
     imagen_misil = pygame.transform.scale(imagen_misil, (32, 32))                                                                   #La ajusta al tamaño especificado
 
-    sonido_explosion = pygame.mixer.Sound(r"E:\Nueva carpeta\SegundoExamenParcial\SegundoExamenParcial\archivos_multimedia\explosion_barco.wav")  #Carga el sonido de explosion
+    sonido_explosion = pygame.mixer.Sound(os.path.join(RUTA_MEDIA, "explosion_barco.wav"))#Carga el sonido de explosion
     sonido_explosion.set_volume(0.3)  # Ajusta el volumen a un 30%
 
     

@@ -8,9 +8,12 @@ pygame.init()
 from funciones import * 
 init_fuente()
 from pantallas import *
+import os
+RUTA_MEDIA = os.path.join(os.path.dirname(__file__), "archivos_multimedia")
+
 
 pygame.mixer.init()
-pygame.mixer.music.load(r"E:\Nueva carpeta\SegundoExamenParcial\SegundoExamenParcial\archivos_multimedia\thunderstruck_fondo.mp3")
+pygame.mixer.music.load(os.path.join(RUTA_MEDIA, "thunderstruck_fondo.mp3"))
 pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(-1)  
 
@@ -19,10 +22,11 @@ pantalla = pygame.display.set_mode((ANCHO, ALTO))       #Crea la ventana de jueg
 pygame.display.set_caption("Batalla Naval")             #Agrega el titulo a la ventana
 
 explosion_frames = cargar_animacion_explosion()                                         #Llama a la funcion para cargar los frames y guardarlos en una lista
-fondo = pygame.image.load(r"E:\Nueva carpeta\SegundoExamenParcial\SegundoExamenParcial\archivos_multimedia\fondo_menu_inicial.png")
+
+fondo = pygame.image.load(os.path.join(RUTA_MEDIA, "fondo_menu_inicial.png"))
 fondo = pygame.transform.scale(fondo, pantalla.get_size())                               #Carga la imagen del menu y la redimensiona
 
-fondo_juego = pygame.image.load(r"E:\Nueva carpeta\SegundoExamenParcial\SegundoExamenParcial\archivos_multimedia\fondo_juego_naval.png")  
+fondo_juego = pygame.image.load(os.path.join(RUTA_MEDIA, "fondo_juego_naval.png"))  
 fondo_juego = pygame.transform.scale(fondo_juego, pantalla.get_size())                   #Carga la imagen del fondo de juego y la redimendiiona
 
 menu_principal(pantalla, fondo, fondo_juego, explosion_frames)                  #Llama a la funcion del menu principal y le pasa la pantalla de juego, 
