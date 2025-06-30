@@ -303,7 +303,7 @@ def mostrar_mejores_puntajes(pantalla):
     while ejecutando:                           #Bucle hasta que el jugador decida volver 
         pantalla.fill(AZUL_OSCURO)                      #Rellena el fondo de azul
 
-        texto_titulo = fuente_titulo.render("🏆 Mejores Puntajes", True, BLANCO)                            #Renderiza el texto del titulo en blanco 
+        texto_titulo = fuente_titulo.render("Mejores Puntajes", True, BLANCO)                            #Renderiza el texto del titulo en blanco 
         pantalla.blit(texto_titulo, (pantalla.get_width() // 2 - texto_titulo.get_width() // 2, 100))       #LO centra horizontalmente y lo posiciona a 100 piceles desde arriba
         
         for i, p in enumerate(top3):                            #Recorre el top 3 
@@ -321,7 +321,7 @@ def mostrar_mejores_puntajes(pantalla):
                 if boton_volver.collidepoint(evento.pos):           #Si el jugador hace click en el boton volver, se sale del bucle y termina su funcion
                     ejecutando = False
                 if boton_mute.collidepoint(evento.pos):
-                    toggle_musica()
+                    silenciar_musica()
 
         
 
@@ -383,7 +383,7 @@ def borrar_puntajes():
     else:
         print("⚠️ No hay puntajes guardados.")
 
-def toggle_musica():
+def silenciar_musica():
     """
     Alterna entre silenciar y activar el volumen de la música de fondo.
     """
@@ -413,5 +413,5 @@ def dibujar_boton_mute(pantalla, x, y, ancho, alto):
     """
     Dibuja el botón de mute/desmute con el símbolo correcto según el estado del volumen.
     """
-    texto_mute = "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊"
+    texto_mute = "Mute" if pygame.mixer.music.get_volume() > 0 else "Sonido"
     return crear_boton(pantalla, texto_mute, x, y, ancho, alto)

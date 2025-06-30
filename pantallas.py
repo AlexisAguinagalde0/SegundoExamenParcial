@@ -15,10 +15,9 @@ def dibujar_tablero_con_textos(pantalla, matriz, x_inicio, y_inicio, TAM_CASILLA
     else:
         pantalla.fill(AZUL_OSCURO)
 
-    # Dibujar el tablero
     for fila in range(len(matriz)):
         for col in range(len(matriz[0])):
-            valor = matriz[fila][col]
+            valor = matriz[fila][col]  # Dibujado de Tablero 
             x = x_inicio + col * TAM_CASILLA
             y = y_inicio + fila * TAM_CASILLA
 
@@ -27,42 +26,34 @@ def dibujar_tablero_con_textos(pantalla, matriz, x_inicio, y_inicio, TAM_CASILLA
             pygame.draw.rect(pantalla, color, (x, y, TAM_CASILLA, TAM_CASILLA))
             pygame.draw.rect(pantalla, BLANCO, (x, y, TAM_CASILLA, TAM_CASILLA), 1)
 
-    # Texto: naves restantes
     naves_restantes = contar_naves_vivas(matriz)
-    tam_fuente = max(24, pantalla.get_height() // 30)
+    tam_fuente = max(24, pantalla.get_height() // 30)               # Texto: naves restantes
     fuente_dinamica = pygame.font.SysFont("arial", tam_fuente)
 
     texto_naves = fuente_dinamica.render(f"Naves restantes: {naves_restantes}", True, (255, 255, 0))
     pantalla.blit(texto_naves, (20, 20 + tam_fuente + 10))
 
-    # Texto: info
-    texto_info = fuente_dinamica.render("Presione ESC para volver", True, BLANCO)
+    texto_info = fuente_dinamica.render("Presione ESC para volver", True, BLANCO)    # Texto: info
     pantalla.blit(texto_info, (20, 20 + tam_fuente * 2 + 20))
 
-    # Texto: puntaje
-    texto_puntaje = fuente_dinamica.render(f"Puntaje: {puntaje:04}", True, (0, 255, 0))
+    texto_puntaje = fuente_dinamica.render(f"Puntaje: {puntaje:04}", True, (0, 255, 0))   # Texto: puntaje
     pantalla.blit(texto_puntaje, (20, 20))
 
-    # Texto: mensaje temporal (nave hundida)
     if contador_mensaje > 0:
-        texto_hundida = fuente.render(mensaje, True, (255, 255, 0))
+        texto_hundida = fuente.render(mensaje, True, (255, 255, 0))  # Texto: mensaje temporal (nave hundida)
         pantalla.blit(texto_hundida, (10, 90))
 
-    # Si todas las naves fueron hundidas (mostrar mensaje final, en caso de que quieras usar desde animación)
     if naves_restantes == 0:
         mensaje_final = f"¡Has hundido todas las naves, {nombre}! Puntaje final: {puntaje:04}"
-        texto_final = fuente_dinamica.render(mensaje_final, True, (255, 255, 255))
+        texto_final = fuente_dinamica.render(mensaje_final, True, (255, 255, 255))          # Si todas las naves fueron hundidas (mostrar mensaje final, en caso de que quieras usar desde animación)
         pantalla.blit(texto_final, (pantalla.get_width() // 2 - texto_final.get_width() // 2,
                                     pantalla.get_height() // 2))
-    # Dibujar botón Reiniciar
-    crear_boton(pantalla, "Reiniciar", boton_reiniciar.x, boton_reiniciar.y, boton_reiniciar.width, boton_reiniciar.height)
-
-    # Dibujar botón Mute
-    texto_mute = "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊"
+    
+    crear_boton(pantalla, "Reiniciar", boton_reiniciar.x, boton_reiniciar.y, boton_reiniciar.width, boton_reiniciar.height) # Dibujar botón Reiniciar
+    texto_mute = "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊"                                  # Dibujar botón Mute
     crear_boton(pantalla, texto_mute, boton_mute.x, boton_mute.y, boton_mute.width, boton_mute.height)
-
-    # Dibujar cursor (misil)
-    pos_mouse = pygame.mouse.get_pos()
+    
+    pos_mouse = pygame.mouse.get_pos()                                                  # Dibujar cursor (misil)
     pantalla.blit(imagen_misil, (pos_mouse[0] - 16, pos_mouse[1] - 16))
 
 
@@ -242,7 +233,7 @@ def pantalla_juego(pantalla, matriz, nombre, fondo_juego = None, explosion_frame
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = evento.pos                   #Si se hace click con el mouse en la pantalla, captura la posicion
                 if boton_mute.collidepoint(evento.pos):
-                    toggle_musica()
+                    silenciar_musica()
 
                 
                 if boton_reiniciar.collidepoint((mouse_x, mouse_y)):
@@ -393,7 +384,7 @@ def menu_principal(pantalla, fondo, fondo_juego, explosion_frames):             
                     sys.exit()
                 
                 if boton_mute.collidepoint(evento.pos):
-                    toggle_musica()
+                    silenciar_musica()
 
             if evento.type == pygame.KEYDOWN:
                                                                                             #Ctrl + R para borrar puntajes guardados del archivo 
