@@ -292,10 +292,7 @@ def mostrar_mejores_puntajes(pantalla):
     else:
         puntajes = []
 
-    for i in range(len(puntajes) - 1):                                              
-        for j in range(i + 1, len(puntajes)):                           #Ordena los puntajes de mayor a menor 
-            if puntajes[i]["puntaje"] < puntajes[j]["puntaje"]:
-                puntajes[i], puntajes[j] = puntajes[j], puntajes[i]
+    ordenar_por_puntaje(puntajes, descendente = True)
 
     top3 = puntajes[:3]                                 #Toma solo los mejores 3
 
@@ -314,7 +311,8 @@ def mostrar_mejores_puntajes(pantalla):
             pantalla.blit(texto_p, (pantalla.get_width() // 2 - texto_p.get_width() // 2, 200 + i * 50))            #Coloca cada linea separada verticalmente (50 pixeles entre linea)
 
         boton_volver = crear_boton(pantalla, "Volver", pantalla.get_width() // 2 - 100, 400, 200, 60)               #Crea el boton volver y lo posiciona centrado horizontalmente y 400 pixeles de la parte superior 
-
+        boton_mute = dibujar_boton_mute(pantalla, 20, pantalla.get_height() - 80, 80, 60)
+        
         for evento in pygame.event.get():             #Captura todos los eventos que ocurrieron
             if evento.type == pygame.QUIT:
                 pygame.quit()                       #Si el jugador cierra la ventana, se cierra el juego 
@@ -325,7 +323,7 @@ def mostrar_mejores_puntajes(pantalla):
                 if boton_mute.collidepoint(evento.pos):
                     toggle_musica()
 
-        boton_mute = dibujar_boton_mute(pantalla, 20, pantalla.get_height() - 80, 80, 60)
+        
 
 
         pygame.display.flip()                   #Actualiza la ventana con los cambios realizados
