@@ -52,47 +52,47 @@ def pedir_nombre(pantalla):
     Retorna:
         str: Nombre ingresado por el jugador.
     """
-    nombre = ""
-    escribiendo = True
+    nombre = ""                                                                     #Inicializa la variable nombre como unstring vacio
+    escribiendo = True                                                              #Bandera para mantener el bucle activo
 
-    reloj = pygame.time.Clock()
-    fuente_input = pygame.font.SysFont("arial", 48)
+    reloj = pygame.time.Clock()                                                     #Controla la velocidad de actulizacion de pantalla
+    fuente_input = pygame.font.SysFont("arial", 48)                                 #Crea una fuente para mostrar el titulo y la entrada del jugador
 
     teclas_validas = {
         pygame.K_a: "A", pygame.K_b: "B", pygame.K_c: "C", pygame.K_d: "D", pygame.K_e: "E",
         pygame.K_f: "F", pygame.K_g: "G", pygame.K_h: "H", pygame.K_i: "I", pygame.K_j: "J",
         pygame.K_k: "K", pygame.K_l: "L", pygame.K_m: "M", pygame.K_n: "N", pygame.K_o: "O",
         pygame.K_p: "P", pygame.K_q: "Q", pygame.K_r: "R", pygame.K_s: "S", pygame.K_t: "T",
-        pygame.K_u: "U", pygame.K_v: "V", pygame.K_w: "W", pygame.K_x: "X", pygame.K_y: "Y",
-        pygame.K_z: "Z", pygame.K_SPACE: " ", pygame.K_MINUS: "-", pygame.K_UNDERSCORE: "_",
+        pygame.K_u: "U", pygame.K_v: "V", pygame.K_w: "W", pygame.K_x: "X", pygame.K_y: "Y",        #Diccionario que convierte cada letra de pygame a texto 
+        pygame.K_z: "Z", pygame.K_SPACE: " ", pygame.K_MINUS: "-", pygame.K_UNDERSCORE: "_",        #Solo se permiten letras, numeros, espacios y guiones
         pygame.K_0: "0", pygame.K_1: "1", pygame.K_2: "2", pygame.K_3: "3", pygame.K_4: "4",
         pygame.K_5: "5", pygame.K_6: "6", pygame.K_7: "7", pygame.K_8: "8", pygame.K_9: "9"
     }
 
-    while escribiendo:
-        pantalla.fill((10, 40, 100))
-        texto = fuente_input.render("Ingresá tu nombre y presioná ENTER:", True, (255, 255, 255))
-        pantalla.blit(texto, (pantalla.get_width() // 2 - texto.get_width() // 2, 150))
+    while escribiendo:                                                                                      #Se ejecuta mientras no se presione ENTER o se cierre la ventana
+        pantalla.fill((10, 40, 100))                                                                        #Rellena la pantalla de un azul oscuro
+        texto = fuente_input.render("Ingresá tu nombre y presioná ENTER:", True, (255, 255, 255))           #Crea el texto de instruccion 
+        pantalla.blit(texto, (pantalla.get_width() // 2 - texto.get_width() // 2, 150))                     #Lo dibuja centrado horizontalmente, un poco hacia arriba de la pantalla
 
-        entrada = fuente_input.render(nombre, True, (0, 255, 0))
-        pantalla.blit(entrada, (pantalla.get_width() // 2 - entrada.get_width() // 2, 250))
+        entrada = fuente_input.render(nombre, True, (0, 255, 0))                                            #Renderiza el nombre que el jufador lleva escrito 
+        pantalla.blit(entrada, (pantalla.get_width() // 2 - entrada.get_width() // 2, 250))                 #lo muestra mas abajo en la pantalla
 
-        for evento in pygame.event.get():
+        for evento in pygame.event.get():                                                       #Lee los eventos que ocurren
             if evento.type == pygame.QUIT:
-                pygame.quit()
+                pygame.quit()                           #Si se cierra la ventana, se termina el programa
                 sys.exit()
             elif evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_RETURN and nombre.strip() != "":
+                if evento.key == pygame.K_RETURN and nombre.strip() != "":              #Si el jugador presiona enter y el nombre no esta vacio, se termina el bucle
                     escribiendo = False
                 elif evento.key == pygame.K_BACKSPACE:
-                    nombre = nombre[:-1]
+                    nombre = nombre[:-1]                            #Si se presiona borrar, se elimina el ultimo caracter del nombre
                 elif evento.key in teclas_validas:
-                    nombre += teclas_validas[evento.key]
+                    nombre += teclas_validas[evento.key]            #Si se presiona una tecla valida, se agrega la letra o numero al nombre
 
-        pygame.display.flip()
+        pygame.display.flip()                                   #Actualiza la pantalla para que se vean los cambios
         reloj.tick(30)
 
-    return nombre.strip()
+    return nombre.strip()                   #Retorna el nombre escrito por el jugador, eliminando espacios en blanco al principio o final
 
 
 
@@ -112,13 +112,13 @@ def crear_boton(pantalla, texto, x, y, ancho, alto, color=AZUL_CLARO):
     Retorna:
         Rect: Rectángulo que representa el botón, útil para detectar clics.
     """
-    rect = pygame.Rect(x, y, ancho, alto)
-    pygame.draw.rect(pantalla, color, rect)
-    pygame.draw.rect(pantalla, BLANCO, rect, 3)
-    texto_render = fuente.render(texto, True, BLANCO)
-    texto_rect = texto_render.get_rect(center=rect.center)
-    pantalla.blit(texto_render, texto_rect)
-    return rect
+    rect = pygame.Rect(x, y, ancho, alto)                           #Crea un rectangulo con las coordenadas y dimensiones dadas
+    pygame.draw.rect(pantalla, color, rect)                         #Dibuja el fondo del boton con el color indicado
+    pygame.draw.rect(pantalla, BLANCO, rect, 3)                     #Dibuja el borde blanco con un grosor de 3 pixeles
+    texto_render = fuente.render(texto, True, BLANCO)               #Crea una superficie con el texto del boton en color blanco
+    texto_rect = texto_render.get_rect(center=rect.center)          #Centra el texto dentro del rectangulo del boton
+    pantalla.blit(texto_render, texto_rect)                         #Dibuja el texto sobre el boton
+    return rect                                                     #Devuelve el rectangulo del boton para poder detectar clicks
 
 
 
@@ -166,38 +166,38 @@ def colocar_naves_en_matriz(matriz, naves_por_tipo):
         No retorna nada. Modifica la matriz directamente.
     """
     filas = len(matriz)
-    columnas = len(matriz[0])
-    contador_naves = 1  # Cada nave (aunque sea del mismo tipo) tiene valor único
+    columnas = len(matriz[0])                                   #Obtiene dimensiones del tablero
+    contador_naves = 1                                          #Inicializa un contador para asignar un numero unico a cada nave
 
-    for tipo, cantidad in naves_por_tipo.items():
+    for tipo, cantidad in naves_por_tipo.items():           #Itera por cada tipo de nave y su cantidad
         if tipo == "submarinos":
             tamaño = 1
         elif tipo == "destructores":
-            tamaño = 2
+            tamaño = 2                                      #Define el tamaño de nave segun su tipo
         elif tipo == "cruceros":
             tamaño = 3
         elif tipo == "acorazado":
             tamaño = 4
 
-        for _ in range(cantidad):
+        for _ in range(cantidad):           #Repite para cada nace del mismo tipo
             colocada = False
-            while not colocada:
-                orientacion = random.choice(["horizontal", "vertical"])
-                if orientacion == "horizontal":
-                    fila = random.randint(0, filas - 1)
+            while not colocada:                                             #Intenta colocar la nave hasta que haya espacio, 
+                orientacion = random.choice(["horizontal", "vertical"])     #Elige al azar si ira horizontal o vertical
+                if orientacion == "horizontal":                         #Si es horizontal:
+                    fila = random.randint(0, filas - 1)                 #Elige posiciones aleatorias
                     col = random.randint(0, columnas - tamaño)
-                    if all(matriz[fila][col + i] == 0 for i in range(tamaño)):
+                    if all(matriz[fila][col + i] == 0 for i in range(tamaño)):  #Verifica que haya espacio libre
                         for i in range(tamaño):
-                            matriz[fila][col + i] = contador_naves
+                            matriz[fila][col + i] = contador_naves              #Coloca la nave asignandole el numero contador_naves
                         colocada = True
                 else:
                     fila = random.randint(0, filas - tamaño)
                     col = random.randint(0, columnas - 1)
-                    if all(matriz[fila + i][col] == 0 for i in range(tamaño)):
+                    if all(matriz[fila + i][col] == 0 for i in range(tamaño)):      #Aca hace lo mismo pero en direccion vertical
                         for i in range(tamaño):
                             matriz[fila + i][col] = contador_naves
                         colocada = True
-            contador_naves += 1
+            contador_naves += 1                 #Incrementa el numero para la proxima nave
 
 
 def nave_hundida(matriz, valor_original):
@@ -211,11 +211,11 @@ def nave_hundida(matriz, valor_original):
     Retorna:
         bool: True si la nave fue hundida, False en caso contrario.
     """
-    for fila in matriz:
+    for fila in matriz:                                 #Recorre toda la matriz
         for casilla in fila:
-            if casilla == valor_original:
+            if casilla == valor_original:               #Si encunetra al menos una parte de la nave sin disparar, retona false
                 return False
-    return True
+    return True                         #Si no se encontro partes vivas, retorna True
 
 def contar_partes(matriz, valor_disparado):
     """
@@ -230,7 +230,7 @@ def contar_partes(matriz, valor_disparado):
     """
     total = 0
     for fila in matriz:
-        total += fila.count(valor_disparado)
+        total += fila.count(valor_disparado)            #Suma cuantas veces aparece el valor de esa nave disparada en toda la matriz
     return total
 
 def contar_naves_vivas(matriz):
@@ -243,12 +243,12 @@ def contar_naves_vivas(matriz):
     Retorna:
         int: Número de naves activas.
     """
-    naves_vivas = set()
+    naves_vivas = set()                                             #Agrega cada numero de parte viva a un conjunto
     for fila in matriz:
         for casilla in fila:
             if 1 <= casilla < 100:  # Casilla con nave no tocada
-                naves_vivas.add(casilla)
-    return len(naves_vivas)
+                naves_vivas.add(casilla)                                                        
+    return len(naves_vivas)                                        #Devuelve la cantidad de naves distintas vivas 
 
 
 def calcular_tam_casilla(pantalla, matriz, margen=40):
@@ -265,58 +265,14 @@ def calcular_tam_casilla(pantalla, matriz, margen=40):
     """
     filas = len(matriz)
     columnas = len(matriz[0])
-
+                                                                #Calcula el espacio disponivle 
     ancho_disp = pantalla.get_width() - 2 * margen
     alto_disp = pantalla.get_height() - 2 * margen
 
-    tam_celda_horizontal = ancho_disp // columnas
+    tam_celda_horizontal = ancho_disp // columnas               #Divide por cantidad de filas/columnas
     tam_celda_vertical = alto_disp // filas
 
-    return min(tam_celda_horizontal, tam_celda_vertical)
-
-def cargar_animacion_explosion():
-    """
-    Carga los frames de animación de explosión.
-
-    Retorna:
-        list: Lista de imágenes (Surface) que representan la animación.
-    """
-    frames = []
-    for i in range(6):  # ajustá el rango según la cantidad de frames
-        img = pygame.image.load(f"explosiones/explosion_{i}.jpg").convert_alpha()
-        img = pygame.transform.scale(img, (40, 40))  # Ajustar tamaño al casillero
-        frames.append(img)
-    return frames
-
-def animar_explosion_en_casillas(pantalla, matriz, valor_hundido, tam_casilla, x_inicio, y_inicio, frames):
-    """
-    Reproduce una animación de explosión en todas las casillas correspondientes a una nave hundida.
-
-    Argumentos:
-        pantalla (Surface): Superficie donde se dibuja.
-        matriz (list): Matriz del juego.
-        valor_hundido (int): Valor que representa la nave hundida.
-        tam_casilla (int): Tamaño de cada casilla.
-        x_inicio (int): Coordenada X inicial del tablero.
-        y_inicio (int): Coordenada Y inicial del tablero.
-        frames (list): Lista de imágenes para la animación.
-
-    Retorna:
-        No retorna. Dibuja directamente sobre la pantalla.
-    """
-    posiciones = []
-    for fila in range(len(matriz)):
-        for col in range(len(matriz[0])):
-            if matriz[fila][col] == valor_hundido:
-                x = x_inicio + col * tam_casilla
-                y = y_inicio + fila * tam_casilla
-                posiciones.append((x, y))
-
-    for frame in frames:
-        for x, y in posiciones:
-            pantalla.blit(frame, (x, y))
-        pygame.display.flip()
-        pygame.time.wait(60)
+    return min(tam_celda_horizontal, tam_celda_vertical)        #Devuelve el tamaño mas pequeño entre ancho o alto, para que todo encaje
 
 
 def mostrar_mejores_puntajes(pantalla):
@@ -330,47 +286,41 @@ def mostrar_mejores_puntajes(pantalla):
         No retorna. Muestra los datos en pantalla.
     """
 
-    # Leer el archivo de puntajes
     if os.path.exists("puntajes.json"):
         with open("puntajes.json", "r", encoding="utf-8") as f:
-            puntajes = json.load(f)
+            puntajes = json.load(f)                                     #Si el archivo existe, lo carga. Si no, la lista queda vacia
     else:
         puntajes = []
 
-    # Ordenar manualmente de mayor a menor
-    for i in range(len(puntajes) - 1):
-        for j in range(i + 1, len(puntajes)):
+    for i in range(len(puntajes) - 1):                                              
+        for j in range(i + 1, len(puntajes)):                           #Ordena los puntajes de mayor a menor 
             if puntajes[i]["puntaje"] < puntajes[j]["puntaje"]:
                 puntajes[i], puntajes[j] = puntajes[j], puntajes[i]
 
-    # Tomar solo los 3 mejores
-    top3 = puntajes[:3]
+    top3 = puntajes[:3]                                 #Toma solo los mejores 3
 
     ejecutando = True
-    fuente_titulo = pygame.font.SysFont("arial", 48)
+    fuente_titulo = pygame.font.SysFont("arial", 48)        #Prepara fuente para mostrar el titulo y la lista 
     fuente_lista = pygame.font.SysFont("arial", 36)
 
-    while ejecutando:
-        pantalla.fill(AZUL_OSCURO)
+    while ejecutando:                           #Bucle hasta que el jugador decida volver 
+        pantalla.fill(AZUL_OSCURO)                      #Rellena el fondo de azul
 
-        # Título
-        texto_titulo = fuente_titulo.render("🏆 Mejores Puntajes", True, BLANCO)
-        pantalla.blit(texto_titulo, (pantalla.get_width() // 2 - texto_titulo.get_width() // 2, 100))
+        texto_titulo = fuente_titulo.render("🏆 Mejores Puntajes", True, BLANCO)                            #Renderiza el texto del titulo en blanco 
+        pantalla.blit(texto_titulo, (pantalla.get_width() // 2 - texto_titulo.get_width() // 2, 100))       #LO centra horizontalmente y lo posiciona a 100 piceles desde arriba
+        
+        for i, p in enumerate(top3):                            #Recorre el top 3 
+            texto_p = fuente_lista.render(f"{i+1}. {p['nombre']} - {p['puntaje']:04}", True, (255, 255, 0))         #Renderiza cada linea de texto con nombre y puntaje
+            pantalla.blit(texto_p, (pantalla.get_width() // 2 - texto_p.get_width() // 2, 200 + i * 50))            #Coloca cada linea separada verticalmente (50 pixeles entre linea)
 
-        # Lista de puntajes
-        for i, p in enumerate(top3):
-            texto_p = fuente_lista.render(f"{i+1}. {p['nombre']} - {p['puntaje']:04}", True, (255, 255, 0))
-            pantalla.blit(texto_p, (pantalla.get_width() // 2 - texto_p.get_width() // 2, 200 + i * 50))
+        boton_volver = crear_boton(pantalla, "Volver", pantalla.get_width() // 2 - 100, 400, 200, 60)               #Crea el boton volver y lo posiciona centrado horizontalmente y 400 pixeles de la parte superior 
 
-        # Botón Volver
-        boton_volver = crear_boton(pantalla, "Volver", pantalla.get_width() // 2 - 100, 400, 200, 60)
-
-        for evento in pygame.event.get():
+        for evento in pygame.event.get():             #Captura todos los eventos que ocurrieron
             if evento.type == pygame.QUIT:
-                pygame.quit()
+                pygame.quit()                       #Si el jugador cierra la ventana, se cierra el juego 
                 sys.exit()
             elif evento.type == pygame.MOUSEBUTTONDOWN:
-                if boton_volver.collidepoint(evento.pos):
+                if boton_volver.collidepoint(evento.pos):           #Si el jugador hace click en el boton volver, se sale del bucle y termina su funcion
                     ejecutando = False
                 if boton_mute.collidepoint(evento.pos):
                     if pygame.mixer.music.get_volume() > 0:
@@ -381,7 +331,7 @@ def mostrar_mejores_puntajes(pantalla):
 
         boton_mute = crear_boton(pantalla, "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊", 20, pantalla.get_height() - 80, 80, 60)
 
-        pygame.display.flip()
+        pygame.display.flip()                   #Actualiza la ventana con los cambios realizados
 
 
 def guardar_puntaje(nombre: str, puntaje: int):
@@ -395,16 +345,16 @@ def guardar_puntaje(nombre: str, puntaje: int):
     Retorna:
         No retorna. Guarda los datos en archivo.
     """
-    archivo = "puntajes.json"
-    lista = []
-
-    if os.path.exists(archivo):
-        with open(archivo, "r", encoding="utf-8") as f:
+    archivo = "puntajes.json"               #Define el nombre dek archivo donde se van a guardar los puntajes
+    lista = []                              #Inicializa una lista vacia donde se guardaran los puntajes
+    
+    if os.path.exists(archivo):                                     #VErifica si el archivo existe
+        with open(archivo, "r", encoding="utf-8") as f:             #Si existe, abre el archivo en modo lectura y lo carga como una lista de diccionarios usando json.load
             lista = json.load(f)
 
-    lista.append({"nombre": nombre, "puntaje": puntaje})
+    lista.append({"nombre": nombre, "puntaje": puntaje})            #Agrega el nuevo puntaje como un diccionario a la lista     
 
-    with open(archivo, "w", encoding="utf-8") as f:
+    with open(archivo, "w", encoding="utf-8") as f:                 #Abre el archivo en modo escritura y escribe toda la lista de puntajes 
         json.dump(lista, f, indent=4)
 
 def ordenar_por_puntaje(lista_puntajes: list, descendente=True):

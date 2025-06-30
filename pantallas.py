@@ -419,3 +419,5 @@ def menu_principal(pantalla, fondo, fondo_juego, explosion_frames):             
         pantalla.blit(texto_nivel, (10, 10))                                           
         
         pygame.display.flip()          #Muestra en pantalla 
+
+
