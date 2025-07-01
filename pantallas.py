@@ -10,33 +10,54 @@ AZUL_OSCURO = (10, 40, 100)                 #Se define los colores para llamarlo
 AZUL_CLARO = (50, 100, 200)
 
 def dibujar_tablero_con_textos(pantalla, matriz, x_inicio, y_inicio, TAM_CASILLA, fondo_juego, puntaje, mensaje, contador_mensaje, nombre, imagen_misil, boton_reiniciar, boton_mute):
+    """
+    Dibuja el tablero del juego junto con el puntaje, mensajes, botones e información adicional en pantalla.
+
+    Argumentos:
+        pantalla (Surface): Superficie principal donde se dibuja todo.
+        matriz (list): Matriz del juego que representa el tablero con agua, naves, y disparos.
+        x_inicio (int): Coordenada X desde donde empieza a dibujarse el tablero.
+        y_inicio (int): Coordenada Y desde donde empieza a dibujarse el tablero.
+        TAM_CASILLA (int): Tamaño en píxeles de cada celda del tablero.
+        fondo_juego (Surface): Imagen de fondo del juego (opcional).
+        puntaje (int): Puntaje actual del jugador.
+        mensaje (str): Mensaje temporal a mostrar (ej: "¡Nave hundida!").
+        contador_mensaje (int): Tiempo restante (en frames) para mostrar el mensaje temporal.
+        nombre (str): Nombre del jugador actual.
+        imagen_misil (Surface): Imagen que representa el cursor personalizado (misil).
+        boton_reiniciar (Rect): Rectángulo del botón "Reiniciar".
+        boton_mute (Rect): Rectángulo del botón de sonido.
+
+    Retorna:
+        No retorna. Dibuja directamente sobre la pantalla proporcionada.
+    """
     if fondo_juego:
-        pantalla.blit(fondo_juego, (0, 0))
+        pantalla.blit(fondo_juego, (0, 0))              #Si hay una imagen de fondo, se dibuja sobre toda la pantalla, sino se pinta de azul oscuro
     else:
         pantalla.fill(AZUL_OSCURO)
 
-    for fila in range(len(matriz)):
+    for fila in range(len(matriz)):                             #SE recorre cada fila y cada columna de la matriz 
         for col in range(len(matriz[0])):
-            valor = matriz[fila][col]  # Dibujado de Tablero 
-            x = x_inicio + col * TAM_CASILLA
+            valor = matriz[fila][col]                           
+            x = x_inicio + col * TAM_CASILLA                    #Calcula la posicion en pantalla (x, y) en base a su indice y el tamaño de la casilla
             y = y_inicio + fila * TAM_CASILLA
 
-            color = color_por_valor(valor)
+            color = color_por_valor(valor)                      #Llama a la funcion que devuelve el color segun si es agua, parte de nave, etc
 
-            pygame.draw.rect(pantalla, color, (x, y, TAM_CASILLA, TAM_CASILLA))
-            pygame.draw.rect(pantalla, BLANCO, (x, y, TAM_CASILLA, TAM_CASILLA), 1)
+            pygame.draw.rect(pantalla, color, (x, y, TAM_CASILLA, TAM_CASILLA))             #Dibuja el rectangulo de fondo 
+            pygame.draw.rect(pantalla, BLANCO, (x, y, TAM_CASILLA, TAM_CASILLA), 1)         #Dibuja el borde blanco alrededor de cada celda 
 
-    naves_restantes = contar_naves_vivas(matriz)
-    tam_fuente = max(24, pantalla.get_height() // 30)               # Texto: naves restantes
+    naves_restantes = contar_naves_vivas(matriz)                            #Cuenta cuantas naves no hundidas quedan 
+    tam_fuente = max(24, pantalla.get_height() // 30)                       #Crea una fuente segun el alto de la pantalla
     fuente_dinamica = pygame.font.SysFont("arial", tam_fuente)
 
     texto_naves = fuente_dinamica.render(f"Naves restantes: {naves_restantes}", True, (255, 255, 0))
-    pantalla.blit(texto_naves, (20, 20 + tam_fuente + 10))
+    pantalla.blit(texto_naves, (20, 20 + tam_fuente + 10))                                          #Muestra cuantas naves quedan en amarillo
 
-    texto_info = fuente_dinamica.render("Presione ESC para volver", True, BLANCO)    # Texto: info
+    texto_info = fuente_dinamica.render("Presione ESC para volver", True, BLANCO)    #Muestra un msj de ayuda 
     pantalla.blit(texto_info, (20, 20 + tam_fuente * 2 + 20))
 
-    texto_puntaje = fuente_dinamica.render(f"Puntaje: {puntaje:04}", True, (0, 255, 0))   # Texto: puntaje
+    texto_puntaje = fuente_dinamica.render(f"Puntaje: {puntaje:04}", True, (0, 255, 0))   # Muestra el puntaje actual con 4 cifras
     pantalla.blit(texto_puntaje, (20, 20))
 
     if contador_mensaje > 0:
@@ -45,12 +66,12 @@ def dibujar_tablero_con_textos(pantalla, matriz, x_inicio, y_inicio, TAM_CASILLA
 
     if naves_restantes == 0:
         mensaje_final = f"¡Has hundido todas las naves, {nombre}! Puntaje final: {puntaje:04}"
-        texto_final = fuente_dinamica.render(mensaje_final, True, (255, 255, 255))          # Si todas las naves fueron hundidas (mostrar mensaje final, en caso de que quieras usar desde animación)
+        texto_final = fuente_dinamica.render(mensaje_final, True, (255, 255, 255))          # Si no quedan naves, muestra un mensaje centrado con el nombre del jugador y el puntaje.
         pantalla.blit(texto_final, (pantalla.get_width() // 2 - texto_final.get_width() // 2,
                                     pantalla.get_height() // 2))
     
-    crear_boton(pantalla, "Reiniciar", boton_reiniciar.x, boton_reiniciar.y, boton_reiniciar.width, boton_reiniciar.height) # Dibujar botón Reiniciar
-    texto_mute = "🔇" if pygame.mixer.music.get_volume() > 0 else "🔊"                                  # Dibujar botón Mute
+    crear_boton(pantalla, "Reiniciar", boton_reiniciar.x, boton_reiniciar.y, boton_reiniciar.width, boton_reiniciar.height) # Dibuja el botón de reinicio con su posición y tamaño.
+    texto_mute = "Mute" if pygame.mixer.music.get_volume() > 0 else "Sound"                                  # Dibuja el botón de sonido.
     crear_boton(pantalla, texto_mute, boton_mute.x, boton_mute.y, boton_mute.width, boton_mute.height)
     
     pos_mouse = pygame.mouse.get_pos()                                                  # Dibujar cursor (misil)
@@ -273,16 +294,7 @@ def pantalla_juego(pantalla, matriz, nombre, fondo_juego = None, explosion_frame
                 x = x_inicio + col * TAM_CASILLA
                 y = y_inicio + fila * TAM_CASILLA
 
-                if valor == 0:
-                    color = AZUL_CLARO  # Agua no disparada
-                elif valor == 200:
-                    color = (0, 0, 0)  # Agua disparada                                 #Decide el color segun su valor 
-                elif 1 <= valor < 100:
-                    color = AZUL_CLARO  # Parte de nave aún no descubierta
-                elif valor >= 100:
-                    color = (255, 0, 0)  # Parte de nave acertada
-                else:
-                    color = (100, 100, 100)  # Caso raro, gris
+                color = color_por_valor(valor)
 
                 pygame.draw.rect(pantalla, color, (x, y, TAM_CASILLA, TAM_CASILLA))                 #Dibuja el rectangulo de fondo de cada celda 
                 pygame.draw.rect(pantalla, BLANCO, (x, y, TAM_CASILLA, TAM_CASILLA), 1)             #Dibuja un borde blanco alrededor

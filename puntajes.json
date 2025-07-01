@@ -2,5 +2,13 @@
     {
         "nombre": "ALFAJORW",
         "puntaje": 243
+    },
+    {
+        "nombre": "ALF",
+        "puntaje": 228
+    },
+    {
+        "nombre": "A",
+        "puntaje": 0
     }
 ]
