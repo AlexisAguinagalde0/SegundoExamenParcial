@@ -15,7 +15,7 @@ RUTA_MEDIA = os.path.join(os.path.dirname(__file__), "archivos_multimedia")
 pygame.mixer.init()
 pygame.mixer.music.load(os.path.join(RUTA_MEDIA, "thunderstruck_fondo.mp3"))
 pygame.mixer.music.set_volume(0.2)
-pygame.mixer.music.play(-1)  
+pygame.mixer.music.play()  
 
 ANCHO, ALTO = 1280, 720                                 #Dimensiones de la pantalla de juego
 pantalla = pygame.display.set_mode((ANCHO, ALTO))       #Crea la ventana de juego con las dimensiones ya pasadas

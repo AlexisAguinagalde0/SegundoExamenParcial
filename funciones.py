@@ -4,6 +4,9 @@ import random
 import json
 import os
 
+RUTA_BASE = os.path.dirname(__file__) 
+ARCHIVO_PUNTAJES = os.path.join(RUTA_BASE, "puntajes.json")
+
 BLANCO = (255, 255, 255)
 AZUL_OSCURO = (10, 40, 100)                                                      #Se define los colores para llamarlos en las diferentes funciones
 AZUL_CLARO = (50, 100, 200)
@@ -286,8 +289,8 @@ def mostrar_mejores_puntajes(pantalla):
         No retorna. Muestra los datos en pantalla.
     """
 
-    if os.path.exists("puntajes.json"):
-        with open("puntajes.json", "r", encoding="utf-8") as f:
+    if os.path.exists(ARCHIVO_PUNTAJES):
+        with open(ARCHIVO_PUNTAJES, "r", encoding="utf-8") as f:
             puntajes = json.load(f)                                     #Si el archivo existe, lo carga. Si no, la lista queda vacia
     else:
         puntajes = []
@@ -340,7 +343,7 @@ def guardar_puntaje(nombre: str, puntaje: int):
     Retorna:
         No retorna. Guarda los datos en archivo.
     """
-    archivo = "puntajes.json"               #Define el nombre dek archivo donde se van a guardar los puntajes
+    archivo = ARCHIVO_PUNTAJES       #Define el nombre dek archivo donde se van a guardar los puntajes
     lista = []                              #Inicializa una lista vacia donde se guardaran los puntajes
     
     if os.path.exists(archivo):                                     #VErifica si el archivo existe
@@ -377,8 +380,8 @@ def borrar_puntajes():
     Retorna:
         No retorna. Borra archivo si está presente.
     """
-    if os.path.exists("puntajes.json"):
-        os.remove("puntajes.json")
+    if os.path.exists(ARCHIVO_PUNTAJES):
+        os.remove(ARCHIVO_PUNTAJES)
         print("✅ Puntajes eliminados correctamente.")
     else:
         print("⚠️ No hay puntajes guardados.")
